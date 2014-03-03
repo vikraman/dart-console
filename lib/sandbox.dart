@@ -2,11 +2,12 @@
 // Licensed under the Apache License, Version 2.0 (the "License")
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 
-#library("sandbox");
-#import("dart-ext:dart_sandbox");
-#import("dart:coreimpl");
-#import("dart:io");
-#import("dart:uri");
+library sandbox;
+import "dart-ext:dart_sandbox";
+//import "dart:coreimpl";
+import "dart:io";
+import "dart:collection";
+//import "dart:uri";
 
 class _TrackingMap extends HashMapImplementation {
   var _newKeys;
@@ -26,7 +27,7 @@ class _TrackingMap extends HashMapImplementation {
 
 class Sandbox {
   final _BASE = r"""
-  #import('dart:io', prefix: 'io');
+  import 'dart:io';
   get VARIABLES => _Env._map;
   _seedEnv(map) => _Env._map = map;
   class _Env {
@@ -52,7 +53,7 @@ class Sandbox {
   
   Sandbox() : _variables = new _TrackingMap() {
     var uniquer = _unique();
-    _library = _createLibrary("console:$uniquer", "#library('console_$uniquer');\n$_BASE");
+    _library = _createLibrary("console:$uniquer", "library console_$uniquer;\n$_BASE");
     _initEnvMap(_library, _variables);
   }
 
@@ -61,11 +62,12 @@ class Sandbox {
   }
 
   execute(code) {
-    var directiveMatch = const RegExp('^\\s*\\#(source|import)\\s*\\(["\'](.*)["\']\\)\\s*;\\s*\$').firstMatch(code);
+    var directiveMatch = new RegExp('^\\s*\\#(source|import)\\s*\\(["\'](.*)["\']\\)\\s*;\\s*\$').firstMatch(code);
     if (directiveMatch != null) return ((directiveMatch[1] == 'source') ? source : import)(directiveMatch[2]);
 
     var name = "_Eval${_unique()}";
     var body = """
+      part of console;
       class $name extends _Env {
         _execute(){\n$code\n}
       }

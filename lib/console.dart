@@ -2,16 +2,16 @@
 // Licensed under the Apache License, Version 2.0 (the "License")
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 
-#library("console");
-#import("readline.dart", prefix: 'readline');
-#import("sandbox.dart");
-#import("fragment_parser.dart");
+library console;
+import "readline.dart";// to readline;
+import "sandbox.dart";
+import "fragment_parser.dart";
 
 class Console {
   var stdin;
   var sandbox;
   Console() : 
-      stdin = new readline.Input(), 
+      stdin = new Input(), 
       sandbox = new Sandbox();
 
   run() {
