@@ -13,8 +13,8 @@ class FragmentParser {
 	get context =>  _stack.isEmpty ? null : _stack[_stack.length - 1];
 
 	void append(text) {
-		text.splitChars().forEach(_updateStack);
-		_buffer.add(text);
+		text.split('').forEach(_updateStack);
+		_buffer.write(text);
     return this;
 	}
 
@@ -68,7 +68,7 @@ class FragmentParser {
   // Returns the index after the character matching the token at pos.
   // No error handling!
   static _findBalance(text, pos) {
-    var chars = text.splitChars();
+    var chars = text.split('');
     var cmd = new FragmentParser();
     do cmd._updateStack(chars[pos++]); while (!cmd._stack.isEmpty);
     return pos;

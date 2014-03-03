@@ -42,7 +42,7 @@ class Sandbox {
     }
   }
   print(o) { // otherwise this is missing for some reason
-    io.stdout.writeString("$o\n");
+    stdout.write("$o\n");
   }
   """;
 
