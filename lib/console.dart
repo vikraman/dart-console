@@ -18,15 +18,18 @@ class Console {
     stdin.loop(">> ", (line) {
       try {
         var input = new FragmentParser().append(line);
-        while (true) switch (input.state) {
-          case FragmentParser.INCOMPLETE:
+        while (true) {
+          if (input.state == FragmentParser.INCOMPLETE) {
             var line = stdin.readline("${input.context}> ");
             if (line == null) return true;
             input.append("$line\n");
-            break;
-          case FragmentParser.DECLARATION: return sandbox.declare(input.toString());
-          case FragmentParser.EXPRESSION: return print(sandbox.eval(input.toString()));
-          case FragmentParser.STATEMENT: return sandbox.execute(input.toString());
+          } else if (input.state == FragmentParser.DECLARATION) {
+            return sandbox.declare(input.toString());
+          } else if (input.state == FragmentParser.EXPRESSION) {
+            return print(sandbox.eval(input.toString()));
+          } else if (input.state == FragmentParser.STATEMENT) {
+            return sandbox.execute(input.toString());
+          }
         }
       } catch (e) {
         print((e is Exception) ? e : "Exception: $e");
