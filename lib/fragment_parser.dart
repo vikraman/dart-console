@@ -51,7 +51,7 @@ class FragmentParser {
   _isLambdaDeclaration(text) {
     if (!text.endsWith(';')) return false;
     // up to three identifiers: void set foo(
-    var prelude = const RegExp(r"^\s*([a-zA-Z0-9_$]+\s*){1,3}").firstMatch(text);
+    var prelude = new RegExp(r"^\s*([a-zA-Z0-9_$]+\s*){1,3}").firstMatch(text);
     if (prelude == null) return false;
     var end = prelude.end;
     if (end < text.length && text[end] == "(") end = _findBalance(text, prelude.end) + 1;
@@ -62,7 +62,7 @@ class FragmentParser {
   _isMapLiteral(text) {
     if (!text.endsWith('}')) return false;
     if (text.startsWith('{')) return true;
-    return const RegExp(r"^<\s*[a-zA-Z0-9_$]+\s*(,\s*[a-zA-Z0-9_$]+\s*)?>").hasMatch(text);
+    return new RegExp(r"^<\s*[a-zA-Z0-9_$]+\s*(,\s*[a-zA-Z0-9_$]+\s*)?>").hasMatch(text);
   }
 
   // Returns the index after the character matching the token at pos.
