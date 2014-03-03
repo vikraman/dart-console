@@ -9,18 +9,20 @@ import "dart:io";
 import "dart:collection";
 //import "dart:uri";
 
-class _TrackingMap extends HashMapImplementation {
-  var _newKeys;
-  _TrackingMap() : _newKeys = new Set<String>();
+class _TrackingMap {
+  var tracker = new HashMap();
+  _TrackingMap();
   operator []= (key, value) {
-    if (!this.containsKey(key)) _newKeys.add(key);
-    return super[key] = value;
+    if (!tracker.containsKey(key)) tracker.add(key);
+    tracker[key] = value;
+    return value;
   }
+  _newKeys() => tracker.keys.toSet();
   _getNewKeys() {
     try {
-      return _newKeys;
+      return _newKeys();
     } finally {
-      _newKeys = new Set<String>();
+      //_newKeys = new Set<String>();
     }
   }
 }
