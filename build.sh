@@ -9,7 +9,7 @@ fi
 buildlib() {
   LIBNAME=$1
   SRCS="src/$LIBNAME.cc $2"
-  COPTS="-O2 -DDART_SHARED_LIB -I$DART_SDK/include -rdynamic -fPIC"
+  COPTS="-O2 -fpermissive -DDART_SHARED_LIB -I$DART_SDK/include -rdynamic -fPIC"
   if [ "${DEBUG+x}" = "x" ]; then COPTS="-DDEBUG $COPTS"; fi
 
   UNAME=`uname`
