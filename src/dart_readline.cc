@@ -28,6 +28,12 @@ Dart_NativeFunction ResolveName(Dart_Handle name, int argc);
 
 static Dart_Handle library;
 
+static Dart_Handle Dart_NewString(const char* str) {
+  assert(str != NULL);
+  return Dart_NewStringFromUTF8(reinterpret_cast<const uint8_t*>(str),
+                                strlen(str));
+}
+
 DART_EXPORT Dart_Handle dart_readline_Init(Dart_Handle parent_library) {
   if (Dart_IsError(parent_library)) { return parent_library; }
 
@@ -77,7 +83,7 @@ DART_FUNCTION(History_Add) {
 
 #define EXPORT(func, args) if (!strcmp(#func, cname) && argc == args) { return func; }
 Dart_NativeFunction ResolveName(Dart_Handle name, int argc) {
-  assert(Dart_IsString8(name));
+  assert(Dart_IsStringLatin1(name));
   const char* cname;
   Dart_Handle check_error = Dart_StringToCString(name, &cname);
   if (Dart_IsError(check_error)) Dart_PropagateError(check_error);
